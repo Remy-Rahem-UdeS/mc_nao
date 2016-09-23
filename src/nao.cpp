@@ -52,6 +52,23 @@ const std::string nao_urdf = "naoV50_generated_urdf/nao";
   // gripperLinks.push_back("L_F43_LINK");
   // gripperLinks.push_back("L_F52_LINK");
   // gripperLinks.push_back("L_F53_LINK");
+  gripperLinks.push_back("LFinger11_link");
+  gripperLinks.push_back("LFinger12_link");
+  gripperLinks.push_back("LFinger13_link");
+  gripperLinks.push_back("LFinger21_link");
+  gripperLinks.push_back("LFinger22_link");
+  gripperLinks.push_back("LFinger23_link");
+  gripperLinks.push_back("LThumb1_link");
+  gripperLinks.push_back("LThumb2_link");
+
+  gripperLinks.push_back("RFinger11_link");
+  gripperLinks.push_back("RFinger12_link");
+  gripperLinks.push_back("RFinger13_link");
+  gripperLinks.push_back("RFinger21_link");
+  gripperLinks.push_back("RFinger22_link");
+  gripperLinks.push_back("RFinger23_link");
+  gripperLinks.push_back("RThumb1_link");
+  gripperLinks.push_back("RThumb2_link");
 
   _accelerometerBody = "";
 
@@ -147,7 +164,7 @@ const std::string nao_urdf = "naoV50_generated_urdf/nao";
   };
 
   _ref_joint_order = {
-      "HeadYaw", "HeadPitch", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch", "LAnklePitch", "LAnkleRoll", "RHipYawPitch", "RHipRoll", "RHipPitch", "RKneePitch", "RAnklePitch", "RAnkleRoll", "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand", "RFinger23", "RFinger13", "RFinger12", "LFinger21", "LFinger13", "LFinger11", "RFinger22", "LFinger22", "RFinger21", "LFinger12", "RFinger11", "LFinger23", "LThumb1", "RThumb1", "RThumb2", "LThumb2"};
+"HeadYaw", "HeadPitch", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch", "LAnklePitch", "LAnkleRoll", "RHipYawPitch", "RHipRoll", "RHipPitch", "RKneePitch", "RAnklePitch", "RAnkleRoll", "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand", "RFinger23", "RFinger13", "RFinger12", "LFinger21", "LFinger13", "LFinger11", "RFinger22", "LFinger22", "RFinger21", "LFinger12", "RFinger11", "LFinger23", "LThumb1", "RThumb1", "RThumb2", "LThumb2"};
 
   _default_attitude = {{1., 0., 0., 0., 0., 0., 0.79216}};
   LOG_SUCCESS("NAOCommonRobotModule initialized");
