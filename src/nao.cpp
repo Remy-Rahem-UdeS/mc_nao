@@ -57,47 +57,50 @@ const std::string nao_urdf = "naoV50_generated_urdf/nao";
 
   halfSitting["HeadYaw"] = {0.0};
   halfSitting["HeadPitch"] = {0.0};
+
   halfSitting["LHipYawPitch"] = {0.0};
   halfSitting["LHipRoll"] = {0.0};
   halfSitting["LHipPitch"] = {0.0};
   halfSitting["LKneePitch"] = {0.0};
   halfSitting["LAnklePitch"] = {0.0};
   halfSitting["LAnkleRoll"] = {0.0};
+
   halfSitting["RHipYawPitch"] = {0.0};
   halfSitting["RHipRoll"] = {0.0};
   halfSitting["RHipPitch"] = {0.0};
   halfSitting["RKneePitch"] = {0.0};
   halfSitting["RAnklePitch"] = {0.0};
   halfSitting["RAnkleRoll"] = {1.11};
+
   halfSitting["LShoulderPitch"] = {0.0};
   halfSitting["LShoulderRoll"] = {0.0};
   halfSitting["LElbowYaw"] = {0.0};
   halfSitting["LElbowRoll"] = {-0.79};
   halfSitting["LWristYaw"] = {0.0};
+  halfSitting["LHand"] = {0.0};
+  halfSitting["LFinger11"] = {0.0};
+  halfSitting["LFinger12"] = {0.0};
+  halfSitting["LFinger13"] = {0.0};
+  halfSitting["LFinger21"] = {0.0};
+  halfSitting["LFinger22"] = {0.0};
+  halfSitting["LFinger23"] = {0.0};
+  halfSitting["LThumb1"] = {0.0};
+  halfSitting["LThumb2"] = {0.0};
+
   halfSitting["RShoulderPitch"] = {0.0};
   halfSitting["RShoulderRoll"] = {0.0};
   halfSitting["RElbowYaw"] = {0.0};
   halfSitting["RElbowRoll"] = {0.79};
   halfSitting["RWristYaw"] = {0.0};
-
-  halfSitting["LHand"] = {0.0};
   halfSitting["RHand"] = {0.0};
-  halfSitting["RFinger23"] = {0.0};
   halfSitting["RFinger13"] = {0.0};
   halfSitting["RFinger12"] = {0.0};
-  halfSitting["LFinger21"] = {0.0};
-  halfSitting["LFinger13"] = {0.0};
-  halfSitting["LFinger11"] = {0.0};
-  halfSitting["RFinger22"] = {0.0};
-  halfSitting["LFinger22"] = {0.0};
-  halfSitting["RFinger21"] = {0.0};
-  halfSitting["LFinger12"] = {0.0};
   halfSitting["RFinger11"] = {0.0};
-  halfSitting["LFinger23"] = {0.0};
-  halfSitting["LThumb1"] = {0.0};
+  halfSitting["RFinger21"] = {0.0};
+  halfSitting["RFinger22"] = {0.0};
+  halfSitting["RFinger23"] = {0.0};
   halfSitting["RThumb1"] = {0.0};
   halfSitting["RThumb2"] = {0.0};
-  halfSitting["LThumb2"] = {0.0};
 
   LOG_INFO("halfSitting set");
 
@@ -135,11 +138,13 @@ const std::string nao_urdf = "naoV50_generated_urdf/nao";
   // _commonSelfCollisions.push_back(mc_rbdyn::Collision("r_ankle", "L_KNEE_P_LINK", 0.02, 0.01, 0.));
   // _commonSelfCollisions.push_back(mc_rbdyn::Collision("r_ankle", "L_HIP_P_LINK", 0.02, 0.01, 0.));
 
-  _grippers = {};
-  // _grippers = {
-  //   {"l_gripper", {"L_HAND_J0", "L_HAND_J1"}, false},
-  //   {"r_gripper", {"R_HAND_J0", "R_HAND_J1"}, true}
-  // };
+  // Gripper's name,  Active joints in the gripper,
+  // Whether the limits should be reversed, see mc_control::Gripper
+  _grippers =
+  {
+    {"l_gripper", {"LHand"}, false},
+    {"r_gripper", {"RHand"}, false},
+  };
 
   _ref_joint_order = {
       "HeadYaw", "HeadPitch", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch", "LAnklePitch", "LAnkleRoll", "RHipYawPitch", "RHipRoll", "RHipPitch", "RKneePitch", "RAnklePitch", "RAnkleRoll", "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand", "RFinger23", "RFinger13", "RFinger12", "LFinger21", "LFinger13", "LFinger11", "RFinger22", "LFinger22", "RFinger21", "LFinger12", "RFinger11", "LFinger23", "LThumb1", "RThumb1", "RThumb2", "LThumb2"};
