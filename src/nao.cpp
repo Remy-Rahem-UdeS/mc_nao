@@ -9,7 +9,7 @@ namespace mc_nao
 {
 const std::string nao_urdf = "naoV50_generated_urdf/nao";
 
-    NAOCommonRobotModule::NAOCommonRobotModule()
+NAOCommonRobotModule::NAOCommonRobotModule()
     : RobotModule(mc_nao::NAO_DESCRIPTION_PATH, "nao")
 {
   LOG_INFO("Loading NAO from: " << mc_nao::NAO_DESCRIPTION_PATH);
@@ -52,6 +52,9 @@ const std::string nao_urdf = "naoV50_generated_urdf/nao";
   // gripperLinks.push_back("L_F43_LINK");
   // gripperLinks.push_back("L_F52_LINK");
   // gripperLinks.push_back("L_F53_LINK");
+
+  gripperLinks.push_back("l_gripper");
+  gripperLinks.push_back("r_gripper");
   gripperLinks.push_back("LFinger11_link");
   gripperLinks.push_back("LFinger12_link");
   gripperLinks.push_back("LFinger13_link");
@@ -87,7 +90,7 @@ const std::string nao_urdf = "naoV50_generated_urdf/nao";
   halfSitting["RHipPitch"] = {0.0};
   halfSitting["RKneePitch"] = {0.0};
   halfSitting["RAnklePitch"] = {0.0};
-  halfSitting["RAnkleRoll"] = {1.11};
+  halfSitting["RAnkleRoll"] = {0.0};
 
   halfSitting["LShoulderPitch"] = {0.0};
   halfSitting["LShoulderRoll"] = {0.0};
@@ -157,16 +160,18 @@ const std::string nao_urdf = "naoV50_generated_urdf/nao";
 
   // Gripper's name,  Active joints in the gripper,
   // Whether the limits should be reversed, see mc_control::Gripper
+  // _grippers = {};
   _grippers =
-  {
-    {"l_gripper", {"LHand"}, false},
-    {"r_gripper", {"RHand"}, false},
-  };
+      {
+          {"l_gripper", {"LHand"}, false},
+          {"r_gripper", {"RHand"}, false},
+      };
 
   _ref_joint_order = {
-"HeadYaw", "HeadPitch", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch", "LAnklePitch", "LAnkleRoll", "RHipYawPitch", "RHipRoll", "RHipPitch", "RKneePitch", "RAnklePitch", "RAnkleRoll", "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand", "RFinger23", "RFinger13", "RFinger12", "LFinger21", "LFinger13", "LFinger11", "RFinger22", "LFinger22", "RFinger21", "LFinger12", "RFinger11", "LFinger23", "LThumb1", "RThumb1", "RThumb2", "LThumb2"};
+      "HeadYaw", "HeadPitch", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch", "LAnklePitch", "LAnkleRoll", "RHipYawPitch", "RHipRoll", "RHipPitch", "RKneePitch", "RAnklePitch", "RAnkleRoll", "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand", "RFinger23", "RFinger13", "RFinger12", "LFinger21", "LFinger13", "LFinger11", "RFinger22", "LFinger22", "RFinger21", "LFinger12", "RFinger11", "LFinger23", "LThumb1", "RThumb1", "RThumb2", "LThumb2"};
 
-  _default_attitude = {{1., 0., 0., 0., 0., 0., 0.79216}};
+  // _default_attitude = {{1., 0., 0., 0., 0., 0., 0.79216}};
+  _default_attitude = {{0., 0., 0., 0., 0., 0., 0.}};
   LOG_SUCCESS("NAOCommonRobotModule initialized");
 }
 
