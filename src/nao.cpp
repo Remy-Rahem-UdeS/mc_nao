@@ -7,7 +7,7 @@
 
 namespace mc_nao
 {
-const std::string nao_urdf = "naoV50_generated_urdf/nao";
+const std::string nao_urdf = "nao";
 
 NAOCommonRobotModule::NAOCommonRobotModule()
     : RobotModule(mc_nao::NAO_DESCRIPTION_PATH, "nao")
@@ -16,42 +16,12 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   rsdf_dir = path + "/rsdf";
   calib_dir = path + "/calib";
 
-  virtualLinks.push_back("base_link");
-  // virtualLinks.push_back("base_link");
-  // virtualLinks.push_back("Accelerometer");
-  // virtualLinks.push_back("Gyro");
-  // virtualLinks.push_back("RightFootForceSensor");
-  // virtualLinks.push_back("LeftFootForceSensor");
-  // virtualLinks.push_back("LeftHandForceSensor");
-  // virtualLinks.push_back("RightHandForceSensor");
-  // virtualLinks.push_back("gaze");
-  // virtualLinks.push_back("r_gripper_sensor");
-  // virtualLinks.push_back("xtion_link");
-  // virtualLinks.push_back("r_gripper");
-  // virtualLinks.push_back("l_gripper");
-  // virtualLinks.push_back("r_sole");
-  // virtualLinks.push_back("l_sole");
+  // virtualLinks = {"base_link", "Neck", "Head", "gaze", "LPelvis", "LHip", "LThigh", "LTibia", "LAnklePitch", "l_ankle", "l_sole", "RPelvis", "RHip", "RThigh", "RTibia", "RAnklePitch", "r_ankle", "r_sole", "torso",
+  // "LShoulder", "LBicep", "LElbow", "LForeArm", "l_wrist", "l_gripper",
+  // "RShoulder", "RBicep", "RElbow", "RForeArm", "r_wrist", "r_gripper",
+  // "LFootBumperRight_frame", "RFsrRL_frame", "CameraBottom_optical_frame",
+  // "RFsrRR_frame", "LFsrFR_frame", "LHandTouchBack_frame", "LHandTouchLeft_frame"};
 
-  // gripperLinks.push_back("R_HAND_J0_LINK");
-  // gripperLinks.push_back("R_HAND_J1_LINK");
-  // gripperLinks.push_back("R_F22_LINK");
-  // gripperLinks.push_back("R_F23_LINK");
-  // gripperLinks.push_back("R_F32_LINK");
-  // gripperLinks.push_back("R_F33_LINK");
-  // gripperLinks.push_back("R_F42_LINK");
-  // gripperLinks.push_back("R_F43_LINK");
-  // gripperLinks.push_back("R_F52_LINK");
-  // gripperLinks.push_back("R_F53_LINK");
-  // gripperLinks.push_back("L_HAND_J0_LINK");
-  // gripperLinks.push_back("L_HAND_J1_LINK");
-  // gripperLinks.push_back("L_F22_LINK");
-  // gripperLinks.push_back("L_F23_LINK");
-  // gripperLinks.push_back("L_F32_LINK");
-  // gripperLinks.push_back("L_F33_LINK");
-  // gripperLinks.push_back("L_F42_LINK");
-  // gripperLinks.push_back("L_F43_LINK");
-  // gripperLinks.push_back("L_F52_LINK");
-  // gripperLinks.push_back("L_F53_LINK");
 
   gripperLinks.push_back("l_gripper");
   gripperLinks.push_back("r_gripper");
@@ -130,7 +100,17 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   // _forceSensors.push_back(mc_rbdyn::ForceSensor("RightHandForceSensor", "r_wrist", sva::PTransformd(R, Eigen::Vector3d(0, 0, -0.04435))));
   // _forceSensors.push_back(mc_rbdyn::ForceSensor("LeftHandForceSensor", "l_wrist", sva::PTransformd(R, Eigen::Vector3d(0, 0, -0.04435))));
 
-  _minimalSelfCollisions = {};
+  _minimalSelfCollisions = {
+      mc_rbdyn::Collision("LThigh", "l_wrist", 0.05, 0.01, 0.),
+      mc_rbdyn::Collision("RThigh", "r_wrist", 0.05, 0.01, 0.),
+      mc_rbdyn::Collision("l_wrist", "r_wrist", 0.05, 0.01, 0.),
+      mc_rbdyn::Collision("l_wrist", "torso", 0.05, 0.01, 0.),
+      mc_rbdyn::Collision("r_wrist", "torso", 0.05, 0.01, 0.),
+      mc_rbdyn::Collision("l_ankle", "r_ankle", 0.05, 0.01, 0.),
+      mc_rbdyn::Collision("l_ankle", "RTibia", 0.05, 0.01, 0.),
+      mc_rbdyn::Collision("r_ankle", "LTibia", 0.05, 0.01, 0.),
+      // mc_rbdyn::Collision("LThigh", "RThigh", 0.01, 0.001, 0.),
+  };
   // _minimalSelfCollisions = {
   //   mc_rbdyn::Collision("torso", "L_SHOULDER_Y_LINK", 0.02, 0.001, 0.),
   //   mc_rbdyn::Collision("body", "L_ELBOW_P_LINK", 0.05, 0.001, 0.),
@@ -147,16 +127,6 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   // };
 
   _commonSelfCollisions = _minimalSelfCollisions;
-  // _commonSelfCollisions.push_back(mc_rbdyn::Collision("L_HIP_P_LINK", "body", 0.02, 0.01, 0.));
-  // _commonSelfCollisions.push_back(mc_rbdyn::Collision("L_HIP_P_LINK", "R_HIP_P_LINK", 0.02, 0.01, 0.));
-  // _commonSelfCollisions.push_back(mc_rbdyn::Collision("L_HIP_P_LINK", "R_KNEE_P_LINK", 0.02, 0.01, 0.));
-  // _commonSelfCollisions.push_back(mc_rbdyn::Collision("R_HIP_P_LINK", "L_KNEE_P_LINK", 0.02, 0.01, 0.));
-  // _commonSelfCollisions.push_back(mc_rbdyn::Collision("L_KNEE_P_LINK", "R_KNEE_P_LINK", 0.02, 0.01, 0.));
-  // _commonSelfCollisions.push_back(mc_rbdyn::Collision("l_ankle", "r_ankle", 0.02, 0.01, 0.));
-  // _commonSelfCollisions.push_back(mc_rbdyn::Collision("l_ankle", "R_KNEE_P_LINK", 0.02, 0.01, 0.));
-  // _commonSelfCollisions.push_back(mc_rbdyn::Collision("l_ankle", "R_HIP_P_LINK", 0.02, 0.01, 0.));
-  // _commonSelfCollisions.push_back(mc_rbdyn::Collision("r_ankle", "L_KNEE_P_LINK", 0.02, 0.01, 0.));
-  // _commonSelfCollisions.push_back(mc_rbdyn::Collision("r_ankle", "L_HIP_P_LINK", 0.02, 0.01, 0.));
 
   // Gripper's name,  Active joints in the gripper,
   // Whether the limits should be reversed, see mc_control::Gripper
@@ -170,6 +140,7 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   _ref_joint_order = {
       "HeadYaw", "HeadPitch", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch", "LAnklePitch", "LAnkleRoll", "RHipYawPitch", "RHipRoll", "RHipPitch", "RKneePitch", "RAnklePitch", "RAnkleRoll", "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand", "RFinger23", "RFinger13", "RFinger12", "LFinger21", "LFinger13", "LFinger11", "RFinger22", "LFinger22", "RFinger21", "LFinger12", "RFinger11", "LFinger23", "LThumb1", "RThumb1", "RThumb2", "LThumb2"};
 
+  // HRP4
   // _default_attitude = {{1., 0., 0., 0., 0., 0., 0.79216}};
   _default_attitude = {{0., 0., 0., 0., 0., 0., 0.}};
   LOG_SUCCESS("NAOCommonRobotModule initialized");
@@ -269,7 +240,7 @@ std::vector<std::map<std::string, std::vector<double>>> NAOCommonRobotModule::no
 
 std::map<std::string, std::pair<std::string, std::string>> NAOCommonRobotModule::stdCollisionsFiles(const rbd::MultiBody& /*mb*/) const
 {
-  // std::map<std::string, std::pair<std::string, std::string>> res;
+  std::map<std::string, std::pair<std::string, std::string>> res;
   // for (const auto& b : mb.bodies())
   // {
   //   // Filter out virtual links without convex files
@@ -279,9 +250,24 @@ std::map<std::string, std::pair<std::string, std::string>> NAOCommonRobotModule:
   //   }
   // }
 
-  // auto addBody = [&res](const std::string& body, const std::string& file) {
-  //   res[body] = {body, file};
-  // };
+  // Manually add all convex for bodies
+  auto addBody = [&res](const std::string& body, const std::string& file) {
+    res[body] = {body, file};
+  };
+  // Add correspondance between link and corresponding CH name
+  addBody("Neck", "HeadPitch");
+  addBody("RThigh", "RHipPitch");
+  addBody("LThigh", "LHipPitch");
+  addBody("r_wrist", "RWristYaw");
+  addBody("l_wrist", "LWristYaw");
+  addBody("torso", "Torso");
+  addBody("LThigh", "LHipPitch");
+  addBody("LTibia", "LKneePitch");
+  addBody("l_ankle", "LAnkleRoll");
+  addBody("RThigh", "RHipPitch");
+  addBody("RTibia", "RKneePitch");
+  addBody("r_ankle", "RAnkleRoll");
+
   // addBody("body", "WAIST_LINK");
   // addBody("torso", "CHEST_Y");
 
@@ -332,8 +318,7 @@ std::map<std::string, std::pair<std::string, std::string>> NAOCommonRobotModule:
   // addWristSubConvex("L");
   // addWristSubConvex("R");
 
-  // return res;
-  return {};
+  return res;
 }
 
 NAONoHandRobotModule::NAONoHandRobotModule()
