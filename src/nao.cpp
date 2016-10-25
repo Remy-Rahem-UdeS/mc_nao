@@ -142,7 +142,7 @@ NAOCommonRobotModule::NAOCommonRobotModule()
 
   // HRP4
   // _default_attitude = {{1., 0., 0., 0., 0., 0., 0.79216}};
-  _default_attitude = {{0., 0., 0., 0., 0., 0., 0.}};
+  _default_attitude = {{1., 0., 0., 0., 0., 0., 0.}};
   LOG_SUCCESS("NAOCommonRobotModule initialized");
 }
 
