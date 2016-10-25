@@ -24,6 +24,27 @@ add_required_dependency(mc_rbdyn_urdf_cpp)
 add_definitions(-Wno-ignored-qualifiers)
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include/Sophus")
 
+# Find description package
+macro(find_description_package desc_pkg)
+  string(TOUPPER "${desc_pkg}" "DESC_PKG")
+  if(NOT DEFINED ${DESC_PKG}_PATH)
+    add_optional_dependency("${desc_pkg}")
+    if(${${DESC_PKG}_FOUND})
+      execute_process(
+        COMMAND "${PKG_CONFIG_EXECUTABLE}"
+        "--variable=datadir" "${desc_pkg}"
+        OUTPUT_VARIABLE "${DESC_PKG}_PATH"
+        ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+    else()
+      MESSAGE(WARNING "${DESC_PKG}_PATH is not defined and pkg-config failed to find ${desc_pkg}, the related robots' modules will not work properly. Check your system configuration or define ${DESC_PKG} to fix this issue.")
+    endif()
+  endif()
+  if(DEFINED ${DESC_PKG}_PATH)
+    MESSAGE(STATUS "Found ${desc_pkg}: ${${DESC_PKG}_PATH}")
+  endif()
+endmacro()
+find_description_package(nao_description)
+
 
 configure_file(${PROJECT_SOURCE_DIR}/include/mc_nao/config.h.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/include/mc_nao/config.h)
 

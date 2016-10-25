@@ -3,12 +3,10 @@
 #include <mc_rbdyn/RobotModule.h>
 #include <mc_rbdyn_urdf/urdf.h>
 
-#include <mc_robots/api.h>
-
 namespace mc_nao
 {
 
-  struct MC_ROBOTS_DLLAPI NAOCommonRobotModule : public mc_rbdyn::RobotModule
+  struct ROBOT_MODULE_API NAOCommonRobotModule : public mc_rbdyn::RobotModule
   {
   public:
     NAOCommonRobotModule();
@@ -30,7 +28,7 @@ namespace mc_nao
     mc_rbdyn_urdf::Limits limits;
   };
 
-  struct MC_ROBOTS_DLLAPI NAONoHandRobotModule : public NAOCommonRobotModule
+  struct ROBOT_MODULE_API NAONoHandRobotModule : public NAOCommonRobotModule
   {
   public:
     NAONoHandRobotModule();
@@ -44,7 +42,7 @@ namespace mc_nao
     std::vector<std::string> filteredLinks;
   };
 
-  struct MC_ROBOTS_DLLAPI NAOWithHandRobotModule : public NAOCommonRobotModule
+  struct ROBOT_MODULE_API NAOWithHandRobotModule : public NAOCommonRobotModule
   {
   public:
     NAOWithHandRobotModule();
