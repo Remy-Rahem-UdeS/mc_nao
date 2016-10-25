@@ -22,7 +22,6 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   // "LFootBumperRight_frame", "RFsrRL_frame", "CameraBottom_optical_frame",
   // "RFsrRR_frame", "LFsrFR_frame", "LHandTouchBack_frame", "LHandTouchLeft_frame"};
 
-
   gripperLinks.push_back("l_gripper");
   gripperLinks.push_back("r_gripper");
   gripperLinks.push_back("LFinger11_link");
@@ -92,39 +91,37 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   halfSitting["RThumb1"] = {0.0};
   halfSitting["RThumb2"] = {0.0};
 
-  LOG_INFO("halfSitting set");
-
-  // _forceSensors.push_back(mc_rbdyn::ForceSensor("RightFootForceSensor", "R_ANKLE_R_LINK", sva::PTransformd(Eigen::Vector3d(0, 0, -0.093))));
-  // _forceSensors.push_back(mc_rbdyn::ForceSensor("LeftFootForceSensor", "L_ANKLE_R_LINK", sva::PTransformd(Eigen::Vector3d(0, 0, -0.093))));
-  // Eigen::Matrix3d R; R << 0, -1, 0, -1, 0, 0, 0, 0, -1; // rpy="3.14159 0 -1.57079"
-  // _forceSensors.push_back(mc_rbdyn::ForceSensor("RightHandForceSensor", "r_wrist", sva::PTransformd(R, Eigen::Vector3d(0, 0, -0.04435))));
-  // _forceSensors.push_back(mc_rbdyn::ForceSensor("LeftHandForceSensor", "l_wrist", sva::PTransformd(R, Eigen::Vector3d(0, 0, -0.04435))));
+  // Foot force sensors.
+  // XXX parse position from URDF
+  _forceSensors.push_back(mc_rbdyn::ForceSensor("LFsrFR", "l_ankle", sva::PTransformd(Eigen::Vector3d(0.07025, -0.0231, -0.04511))));
+  _forceSensors.push_back(mc_rbdyn::ForceSensor("LFsrRR", "l_ankle", sva::PTransformd(Eigen::Vector3d(-0.02965, -0.0191, -0.04511))));
+  _forceSensors.push_back(mc_rbdyn::ForceSensor("LFsrFL", "l_ankle", sva::PTransformd(Eigen::Vector3d(0.07025, 0.0299, -0.04511))));
+  _forceSensors.push_back(mc_rbdyn::ForceSensor("LFsrRL", "l_ankle", sva::PTransformd(Eigen::Vector3d(-0.03025, 0.0299, -0.04511))));
+  _forceSensors.push_back(mc_rbdyn::ForceSensor("RFsrFL", "l_ankle", sva::PTransformd(Eigen::Vector3d(0.07025, 0.0231, -0.04511))));
+  _forceSensors.push_back(mc_rbdyn::ForceSensor("RFsrRL", "l_ankle", sva::PTransformd(Eigen::Vector3d(-0.03025, 0.0191, -0.04511))));
+  _forceSensors.push_back(mc_rbdyn::ForceSensor("RFsrRR", "l_ankle", sva::PTransformd(Eigen::Vector3d(-0.02965, -0.0299, -0.04511))));
+  _forceSensors.push_back(mc_rbdyn::ForceSensor("RFsrFR", "l_ankle", sva::PTransformd(Eigen::Vector3d(0.07025, -0.0299, -0.04511))));
 
   _minimalSelfCollisions = {
-      mc_rbdyn::Collision("LThigh", "l_wrist", 0.05, 0.01, 0.),
-      mc_rbdyn::Collision("RThigh", "r_wrist", 0.05, 0.01, 0.),
+      mc_rbdyn::Collision("Head", "l_wrist", 0.05, 0.02, 0.),
+      mc_rbdyn::Collision("Head", "r_wrist", 0.05, 0.02, 0.),
+      mc_rbdyn::Collision("Head", "LForeArm", 0.05, 0.02, 0.),
+      mc_rbdyn::Collision("Head", "RForeArm", 0.05, 0.02, 0.),
+      mc_rbdyn::Collision("xtion_link", "l_wrist", 0.05, 0.02, 0.),
+      mc_rbdyn::Collision("xtion_link", "r_wrist", 0.05, 0.02, 0.),
+      mc_rbdyn::Collision("xtion_link", "LForeArm", 0.05, 0.02, 0.),
+      mc_rbdyn::Collision("xtion_link", "RForeArm", 0.05, 0.02, 0.),
+      mc_rbdyn::Collision("LThigh", "l_wrist", 0.05, 0.02, 0.),
+      mc_rbdyn::Collision("RThigh", "r_wrist", 0.05, 0.02, 0.),
       mc_rbdyn::Collision("l_wrist", "r_wrist", 0.05, 0.01, 0.),
       mc_rbdyn::Collision("l_wrist", "torso", 0.05, 0.01, 0.),
       mc_rbdyn::Collision("r_wrist", "torso", 0.05, 0.01, 0.),
       mc_rbdyn::Collision("l_ankle", "r_ankle", 0.05, 0.01, 0.),
       mc_rbdyn::Collision("l_ankle", "RTibia", 0.05, 0.01, 0.),
-      mc_rbdyn::Collision("r_ankle", "LTibia", 0.05, 0.01, 0.),
+      mc_rbdyn::Collision("r_ankle", "LTibia", 0.05, 0.01, 0.)
       // mc_rbdyn::Collision("LThigh", "RThigh", 0.01, 0.001, 0.),
+      // mc_rbdyn::Collision("LTibia", "RTibia", 0.01, 0.001, 0.)
   };
-  // _minimalSelfCollisions = {
-  //   mc_rbdyn::Collision("torso", "L_SHOULDER_Y_LINK", 0.02, 0.001, 0.),
-  //   mc_rbdyn::Collision("body", "L_ELBOW_P_LINK", 0.05, 0.001, 0.),
-  //   mc_rbdyn::Collision("torso", "R_SHOULDER_Y_LINK", 0.02, 0.001, 0.),
-  //   mc_rbdyn::Collision("body", "R_ELBOW_P_LINK", 0.05, 0.001, 0.),
-  //   mc_rbdyn::Collision("l_wrist", "L_HIP_P_LINK", 0.07, 0.05, 0.),
-  //   mc_rbdyn::Collision("r_wrist", "R_HIP_P_LINK", 0.07, 0.05, 0.),
-  //   mc_rbdyn::Collision("r_wrist_sub0", "R_WRIST_Y_LINK_sub0", 0.005, 0.001, 0.),
-  //   mc_rbdyn::Collision("r_wrist_sub1", "R_WRIST_Y_LINK_sub0", 0.005, 0.001, 0.),
-  //   mc_rbdyn::Collision("l_wrist_sub0", "L_WRIST_Y_LINK_sub0", 0.005, 0.001, 0.),
-  //   mc_rbdyn::Collision("l_wrist_sub1", "L_WRIST_Y_LINK_sub0", 0.005, 0.001, 0.),
-  //   mc_rbdyn::Collision("R_HIP_P_LINK", "body", 0.02, 0.01, 0.),
-  //   mc_rbdyn::Collision("L_HIP_P_LINK", "body", 0.02, 0.01, 0.)
-  // };
 
   _commonSelfCollisions = _minimalSelfCollisions;
 
@@ -138,11 +135,12 @@ NAOCommonRobotModule::NAOCommonRobotModule()
       };
 
   _ref_joint_order = {
-      "HeadYaw", "HeadPitch", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch", "LAnklePitch", "LAnkleRoll", "RHipYawPitch", "RHipRoll", "RHipPitch", "RKneePitch", "RAnklePitch", "RAnkleRoll", "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand", "RFinger23", "RFinger13", "RFinger12", "LFinger21", "LFinger13", "LFinger11", "RFinger22", "LFinger22", "RFinger21", "LFinger12", "RFinger11", "LFinger23", "LThumb1", "RThumb1", "RThumb2", "LThumb2"};
+      "HeadYaw", "HeadPitch", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch", "LAnklePitch", "LAnkleRoll", "RHipYawPitch", "RHipRoll", "RHipPitch", "RKneePitch", "RAnklePitch", "RAnkleRoll", "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand"};
 
-  // HRP4
-  // _default_attitude = {{1., 0., 0., 0., 0., 0., 0.79216}};
-  _default_attitude = {{0., 0., 0., 0., 0., 0., 0.}};
+  // Posture of base link in half-sitting for when no attitude is available.
+  // (quaternion, translation)
+  _default_attitude = {{1., 0., 0., 0.,  0., 0., 0.333}};
+
   LOG_SUCCESS("NAOCommonRobotModule initialized");
 }
 
@@ -153,6 +151,8 @@ std::map<std::string, std::pair<std::string, std::string>> NAOCommonRobotModule:
   for (const auto& f : files)
   {
     res[f.first] = std::pair<std::string, std::string>(f.second.first, convexPath + f.second.second + "-ch.txt");
+    LOG_INFO("f: " << f.first << ", " << f.second.first << ", " << f.second.second);
+    LOG_INFO("res: " << res[f.first].first << ", " << res[f.first].second);
   }
   return res;
 }
@@ -166,9 +166,7 @@ void NAOCommonRobotModule::readUrdf(const std::string& robotName, const std::vec
   {
     std::stringstream urdf;
     urdf << ifs.rdbuf();
-    LOG_INFO("URDF file read, processing...");
     mc_rbdyn_urdf::URDFParserResult res = mc_rbdyn_urdf::rbdyn_from_urdf(urdf.str(), false, filteredLinks, true, "base_link");
-    LOG_INFO("URDF parsed");
     mb = res.mb;
     mbc = res.mbc;
     mbg = res.mbg;
@@ -188,8 +186,7 @@ void NAOCommonRobotModule::readUrdf(const std::string& robotName, const std::vec
 std::map<std::string, std::vector<double>> NAOCommonRobotModule::halfSittingPose(const rbd::MultiBody& mb) const
 {
   std::map<std::string, std::vector<double>> res;
-  for (const auto& j : mb.joints())
-  {
+  for (const auto& j : mb.joints()) {
     if (halfSitting.count(j.name()))
     {
       res[j.name()] = halfSitting.at(j.name());
@@ -255,7 +252,10 @@ std::map<std::string, std::pair<std::string, std::string>> NAOCommonRobotModule:
     res[body] = {body, file};
   };
   // Add correspondance between link and corresponding CH name
-  addBody("Neck", "HeadPitch");
+  addBody("Head", "HeadPitch");
+  addBody("xtion_link", "ASUS_XTION");
+  addBody("LForeArm", "LElbowRoll");
+  addBody("RForeArm", "RElbowRoll");
   addBody("RThigh", "RHipPitch");
   addBody("LThigh", "LHipPitch");
   addBody("r_wrist", "RWristYaw");
