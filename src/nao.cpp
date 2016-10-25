@@ -150,8 +150,6 @@ std::map<std::string, std::pair<std::string, std::string>> NAOCommonRobotModule:
   for (const auto& f : files)
   {
     res[f.first] = std::pair<std::string, std::string>(f.second.first, convexPath + f.second.second + "-ch.txt");
-    LOG_INFO("f: " << f.first << ", " << f.second.first << ", " << f.second.second);
-    LOG_INFO("res: " << res[f.first].first << ", " << res[f.first].second);
   }
   return res;
 }
@@ -159,7 +157,6 @@ std::map<std::string, std::pair<std::string, std::string>> NAOCommonRobotModule:
 void NAOCommonRobotModule::readUrdf(const std::string& robotName, const std::vector<std::string>& filteredLinks)
 {
   std::string urdfPath = path + "/urdf/" + robotName + ".urdf";
-  LOG_INFO("Loading URDF: " << urdfPath);
   std::ifstream ifs(urdfPath);
   if (ifs.is_open())
   {
@@ -173,7 +170,6 @@ void NAOCommonRobotModule::readUrdf(const std::string& robotName, const std::vec
 
     _visual = res.visual;
     _collisionTransforms = res.collision_tf;
-    LOG_SUCCESS("Processed URDF");
   }
   else
   {
