@@ -47,19 +47,40 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   halfSitting["HeadYaw"] = {0.0};
   halfSitting["HeadPitch"] = {0.0};
 
-  halfSitting["LHipYawPitch"] = {0.0};
-  halfSitting["LHipRoll"] = {0.0};
-  halfSitting["LHipPitch"] = {0.0};
-  halfSitting["LKneePitch"] = {0.0};
-  halfSitting["LAnklePitch"] = {0.0};
-  halfSitting["LAnkleRoll"] = {0.0};
+  // halfSitting["LHipYawPitch"] = {0.0};
+  // halfSitting["LHipRoll"] = {0.0};
+  // halfSitting["LHipPitch"] = {0.0};
+  // halfSitting["LKneePitch"] = {0.0};
+  // halfSitting["LAnklePitch"] = {0.0};
+  // halfSitting["LAnkleRoll"] = {0.0};
 
-  halfSitting["RHipYawPitch"] = {0.0};
-  halfSitting["RHipRoll"] = {0.0};
-  halfSitting["RHipPitch"] = {0.0};
-  halfSitting["RKneePitch"] = {0.0};
-  halfSitting["RAnklePitch"] = {0.0};
-  halfSitting["RAnkleRoll"] = {0.0};
+  // halfSitting["RHipYawPitch"] = {0.0};
+  // halfSitting["RHipRoll"] = {0.0};
+  // halfSitting["RHipPitch"] = {0.0};
+  // halfSitting["RKneePitch"] = {0.0};
+  // halfSitting["RAnklePitch"] = {0.0};
+  // halfSitting["RAnkleRoll"] = {0.0};
+
+  halfSitting["LHipYawPitch"] = {0.1396 * 180/3.14159};
+  halfSitting["LHipRoll"] = {0.1396 * 180/3.14159};
+  halfSitting["LHipPitch"] = {-0.88967 * 180/3.14159};
+  halfSitting["LKneePitch"] = {1.5247 * 180/3.14159};
+  halfSitting["LAnklePitch"] = {-0.7394 * 180/3.14159};
+  halfSitting["LAnkleRoll"] = {-0.0858 * 180/3.14159};
+  //0.13963603973388672, 0.13963603973388672, -0.8896780014038086, 1.5247540473937988, -0.7394299507141113, -0.0858621597290039
+
+  halfSitting["RHipYawPitch"] = {0.1396 * 180/3.14159};
+  halfSitting["RHipRoll"] = {-0.1396 * 180/3.14159};
+  halfSitting["RHipPitch"] = {-0.88967 * 180/3.14159};
+  halfSitting["RKneePitch"] = {1.5247 * 180/3.14159};
+  halfSitting["RAnklePitch"] = {-0.7394 * 180/3.14159};
+  halfSitting["RAnkleRoll"] = {0.0858 * 180/3.14159};
+  // halfSitting["RHipYawPitch"] = {0.1004318904876709 * 180/3.14159};
+  // halfSitting["RHipRoll"] = {-0.14730596542358398 * 180/3.14159};
+  // halfSitting["RHipPitch"] = {-0.556800127029419 * 180/3.14159};
+  // halfSitting["RKneePitch"] = {1.0002098083496 * 180/3.14159};
+  // halfSitting["RAnklePitch"] = {-0.5256240844726562 * 180/3.14159};
+  // halfSitting["RAnkleRoll"] = {0.15029001235961914 * 180/3.14159};
 
   halfSitting["LShoulderPitch"] = {0.0};
   halfSitting["LShoulderRoll"] = {0.0};
@@ -91,6 +112,7 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   halfSitting["RThumb1"] = {0.0};
   halfSitting["RThumb2"] = {0.0};
 
+
   // Foot force sensors.
   // XXX parse position from URDF
   _forceSensors.push_back(mc_rbdyn::ForceSensor("LFsrFR", "l_ankle", sva::PTransformd(Eigen::Vector3d(0.07025, -0.0231, -0.04511))));
@@ -103,22 +125,24 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   _forceSensors.push_back(mc_rbdyn::ForceSensor("RFsrFR", "l_ankle", sva::PTransformd(Eigen::Vector3d(0.07025, -0.0299, -0.04511))));
 
   _minimalSelfCollisions = {
-      mc_rbdyn::Collision("Head", "l_wrist", 0.05, 0.02, 0.),
-      mc_rbdyn::Collision("Head", "r_wrist", 0.05, 0.02, 0.),
-      mc_rbdyn::Collision("Head", "LForeArm", 0.05, 0.02, 0.),
-      mc_rbdyn::Collision("Head", "RForeArm", 0.05, 0.02, 0.),
-      mc_rbdyn::Collision("xtion_link", "l_wrist", 0.05, 0.02, 0.),
-      mc_rbdyn::Collision("xtion_link", "r_wrist", 0.05, 0.02, 0.),
-      mc_rbdyn::Collision("xtion_link", "LForeArm", 0.05, 0.02, 0.),
-      mc_rbdyn::Collision("xtion_link", "RForeArm", 0.05, 0.02, 0.),
-      mc_rbdyn::Collision("LThigh", "l_wrist", 0.05, 0.02, 0.),
-      mc_rbdyn::Collision("RThigh", "r_wrist", 0.05, 0.02, 0.),
-      mc_rbdyn::Collision("l_wrist", "r_wrist", 0.05, 0.01, 0.),
-      mc_rbdyn::Collision("l_wrist", "torso", 0.05, 0.01, 0.),
-      mc_rbdyn::Collision("r_wrist", "torso", 0.05, 0.01, 0.),
-      mc_rbdyn::Collision("l_ankle", "r_ankle", 0.05, 0.01, 0.),
-      mc_rbdyn::Collision("l_ankle", "RTibia", 0.05, 0.01, 0.),
-      mc_rbdyn::Collision("r_ankle", "LTibia", 0.05, 0.01, 0.)
+      mc_rbdyn::Collision("Head", "l_wrist", 0.02, 0.01, 0.),
+      mc_rbdyn::Collision("Head", "r_wrist", 0.02, 0.01, 0.),
+      mc_rbdyn::Collision("Head", "LForeArm", 0.02, 0.01, 0.),
+      mc_rbdyn::Collision("Head", "RForeArm", 0.02, 0.01, 0.),
+      // mc_rbdyn::Collision("Head", "LBicep", 0.02, 0.01, 0.),
+      // mc_rbdyn::Collision("Head", "RBicep", 0.02, 0.01, 0.),
+      mc_rbdyn::Collision("xtion_link", "l_wrist", 0.02, 0.02, 0.),
+      mc_rbdyn::Collision("xtion_link", "r_wrist", 0.02, 0.02, 0.),
+      mc_rbdyn::Collision("xtion_link", "LForeArm", 0.02, 0.02, 0.),
+      mc_rbdyn::Collision("xtion_link", "RForeArm", 0.02, 0.02, 0.),
+      mc_rbdyn::Collision("LThigh", "l_wrist", 0.02, 0.01, 0.),
+      mc_rbdyn::Collision("RThigh", "r_wrist", 0.02, 0.01, 0.),
+      mc_rbdyn::Collision("l_wrist", "r_wrist", 0.02, 0.01, 0.),
+      mc_rbdyn::Collision("l_wrist", "torso", 0.02, 0.01, 0.),
+      mc_rbdyn::Collision("r_wrist", "torso", 0.02, 0.01, 0.),
+      mc_rbdyn::Collision("l_ankle", "r_ankle", 0.02, 0.01, 0.),
+      mc_rbdyn::Collision("l_ankle", "RTibia", 0.02, 0.01, 0.),
+      mc_rbdyn::Collision("r_ankle", "LTibia", 0.02, 0.01, 0.)
       // mc_rbdyn::Collision("LThigh", "RThigh", 0.01, 0.001, 0.),
       // mc_rbdyn::Collision("LTibia", "RTibia", 0.01, 0.001, 0.)
   };
@@ -136,10 +160,15 @@ NAOCommonRobotModule::NAOCommonRobotModule()
 
   _ref_joint_order = {
       "HeadYaw", "HeadPitch", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch", "LAnklePitch", "LAnkleRoll", "RHipYawPitch", "RHipRoll", "RHipPitch", "RKneePitch", "RAnklePitch", "RAnkleRoll", "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand"};
+  // _ref_joint_order = {
+  //     "HeadYaw", "HeadPitch", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch", "LAnklePitch", "LAnkleRoll", "RHipRoll", "RHipPitch", "RKneePitch", "RAnklePitch", "RAnkleRoll", "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand"};
 
   // Posture of base link in half-sitting for when no attitude is available.
   // (quaternion, translation)
-  _default_attitude = {{1., 0., 0., 0.,  0., 0., 0.333}};
+  // _default_attitude = {{1., 0., 0., 0.,  0., 0., 0.333}};
+
+  // Half sitting with rotated feet
+  _default_attitude = {{1., 0., 0., 0.,  0., 0., 0.30}};
   LOG_SUCCESS("NAOCommonRobotModule initialized");
 }
 
@@ -249,6 +278,8 @@ std::map<std::string, std::pair<std::string, std::string>> NAOCommonRobotModule:
   // Add correspondance between link and corresponding CH name
   addBody("Head", "HeadPitch");
   addBody("xtion_link", "ASUS_XTION");
+  addBody("LBicep", "LShoulderRoll");
+  addBody("RBicep", "RShoulderRoll");
   addBody("LForeArm", "LElbowRoll");
   addBody("RForeArm", "RElbowRoll");
   addBody("RThigh", "RHipPitch");
