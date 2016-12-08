@@ -61,20 +61,22 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   // halfSitting["RAnklePitch"] = {0.0};
   // halfSitting["RAnkleRoll"] = {0.0};
 
+//rotation error q[0]: 0.00918355 -0.0241499 0.0312002
+
   halfSitting["LHipYawPitch"] = {0.1396 * 180/3.14159};
   halfSitting["LHipRoll"] = {0.1396 * 180/3.14159};
   halfSitting["LHipPitch"] = {-0.88967 * 180/3.14159};
   halfSitting["LKneePitch"] = {1.5247 * 180/3.14159};
-  halfSitting["LAnklePitch"] = {-0.7394 * 180/3.14159};
-  halfSitting["LAnkleRoll"] = {-0.0858 * 180/3.14159};
+  halfSitting["LAnklePitch"] = {(-0.7394 + 0.005) * 180/3.14159};
+  halfSitting["LAnkleRoll"] = {(-0.0858 - 0.048) * 180/3.14159};
   //0.13963603973388672, 0.13963603973388672, -0.8896780014038086, 1.5247540473937988, -0.7394299507141113, -0.0858621597290039
 
   halfSitting["RHipYawPitch"] = {0.1396 * 180/3.14159};
   halfSitting["RHipRoll"] = {-0.1396 * 180/3.14159};
   halfSitting["RHipPitch"] = {-0.88967 * 180/3.14159};
   halfSitting["RKneePitch"] = {1.5247 * 180/3.14159};
-  halfSitting["RAnklePitch"] = {-0.7394 * 180/3.14159};
-  halfSitting["RAnkleRoll"] = {0.0858 * 180/3.14159};
+  halfSitting["RAnklePitch"] = {(-0.7394 + 0.005) * 180/3.14159};
+  halfSitting["RAnkleRoll"] = {(0.0858 + 0.048)  * 180/3.14159};
   // halfSitting["RHipYawPitch"] = {0.1004318904876709 * 180/3.14159};
   // halfSitting["RHipRoll"] = {-0.14730596542358398 * 180/3.14159};
   // halfSitting["RHipPitch"] = {-0.556800127029419 * 180/3.14159};
@@ -82,7 +84,7 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   // halfSitting["RAnklePitch"] = {-0.5256240844726562 * 180/3.14159};
   // halfSitting["RAnkleRoll"] = {0.15029001235961914 * 180/3.14159};
 
-  halfSitting["LShoulderPitch"] = {0.0};
+  halfSitting["LShoulderPitch"] = {0.30 * 180/M_PI};
   halfSitting["LShoulderRoll"] = {0.0};
   halfSitting["LElbowYaw"] = {0.0};
   halfSitting["LElbowRoll"] = {-0.79};
@@ -97,7 +99,7 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   halfSitting["LThumb1"] = {0.0};
   halfSitting["LThumb2"] = {0.0};
 
-  halfSitting["RShoulderPitch"] = {0.0};
+  halfSitting["RShoulderPitch"] = {0.30 * 180/M_PI};
   halfSitting["RShoulderRoll"] = {0.0};
   halfSitting["RElbowYaw"] = {0.0};
   halfSitting["RElbowRoll"] = {0.79};
@@ -168,7 +170,11 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   // _default_attitude = {{1., 0., 0., 0.,  0., 0., 0.333}};
 
   // Half sitting with rotated feet
-  _default_attitude = {{1., 0., 0., 0.,  0., 0., 0.30}};
+  // _default_attitude = {{1., 0., 0., 0.,  0., 0., 0.30}};
+  //_default_attitude = {{0.998113, -0.0239494, 0.0037978, 0.0564076, -0.00336301, 0.0127557, 0.275204}};
+
+
+  _default_attitude = {{1., 0., 0., 0., -0.00336301, 0.0127557, 0.275204}};
   LOG_SUCCESS("NAOCommonRobotModule initialized");
 }
 
