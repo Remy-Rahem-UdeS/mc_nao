@@ -42,7 +42,10 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   gripperLinks.push_back("RThumb1_link");
   gripperLinks.push_back("RThumb2_link");
 
-  _accelerometerBody = "";
+  _bodySensors = {
+    {"Accelerometer", "torso", sva::PTransformd(Eigen::Vector3d(-0.008, 0.00606, 0.027))},
+    {"Gyrometer", "torso", sva::PTransformd(Eigen::Vector3d(-0.008, 0.006, 0.029))}
+  };
 
   halfSitting["HeadYaw"] = {0.0};
   halfSitting["HeadPitch"] = {0.0};
@@ -125,6 +128,9 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   _forceSensors.push_back(mc_rbdyn::ForceSensor("RFsrRL", "l_ankle", sva::PTransformd(Eigen::Vector3d(-0.03025, 0.0191, -0.04511))));
   _forceSensors.push_back(mc_rbdyn::ForceSensor("RFsrRR", "l_ankle", sva::PTransformd(Eigen::Vector3d(-0.02965, -0.0299, -0.04511))));
   _forceSensors.push_back(mc_rbdyn::ForceSensor("RFsrFR", "l_ankle", sva::PTransformd(Eigen::Vector3d(0.07025, -0.0299, -0.04511))));
+  // XXX fix position
+  _forceSensors.push_back(mc_rbdyn::ForceSensor("LF_TOTAL_WEIGHT", "l_ankle", sva::PTransformd(Eigen::Vector3d(0.07025, -0.0299, -0.04511))));
+  _forceSensors.push_back(mc_rbdyn::ForceSensor("RF_TOTAL_WEIGHT", "l_ankle", sva::PTransformd(Eigen::Vector3d(0.07025, -0.0299, -0.04511))));
 
   _minimalSelfCollisions = {
       mc_rbdyn::Collision("Head", "l_wrist", 0.02, 0.01, 0.),

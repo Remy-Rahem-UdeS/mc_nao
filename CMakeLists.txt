@@ -17,7 +17,6 @@ endif()
 # Use jrl-cmakemoduels to get mc_rtc depency
 set(PKG_CONFIG_ADDITIONAL_VARIABLES "${PKG_CONFIG_ADDITIONAL_VARIABLES} libdir")
 add_required_dependency(mc_rtc)
-add_required_dependency(mc_rbdyn)
 add_required_dependency(mc_rbdyn_urdf_cpp)
 
 # for Sophus
@@ -56,8 +55,9 @@ set(robot_HDR include/mc_nao/nao.h)
 set(robot_base nao)
 add_library(${robot_base} SHARED ${robot_SRC} ${robot_HDR})
 set_target_properties(${robot_base} PROPERTIES COMPILE_FLAGS "-DMC_ROBOTS_EXPORTS" PREFIX "")
-target_link_libraries(${robot_base} mc_rbdyn ${Boost_LIBRARIES})
+target_link_libraries(${robot_base} ${Boost_LIBRARIES})
 pkg_config_use_dependency(${robot_base} mc_rbdyn_urdf_cpp)
+pkg_config_use_dependency(${robot_base} mc_rtc)
 install(TARGETS ${robot_base} DESTINATION ${MC_ROBOTS_INSTALL_PREFIX})
 
 
