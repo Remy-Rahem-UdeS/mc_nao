@@ -87,10 +87,10 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   // halfSitting["RAnklePitch"] = {-0.5256240844726562 * 180/3.14159};
   // halfSitting["RAnkleRoll"] = {0.15029001235961914 * 180/3.14159};
 
-  halfSitting["LShoulderPitch"] = {0.30 * 180/M_PI};
-  halfSitting["LShoulderRoll"] = {0.0};
+  halfSitting["LShoulderPitch"] = {1.49 * 180/M_PI};
+  halfSitting["LShoulderRoll"] = {0.30 * 180/M_PI};
   halfSitting["LElbowYaw"] = {0.0};
-  halfSitting["LElbowRoll"] = {-0.79};
+  halfSitting["LElbowRoll"] = {-0.28 * 180/M_PI};
   halfSitting["LWristYaw"] = {0.0};
   halfSitting["LHand"] = {0.0};
   halfSitting["LFinger11"] = {0.0};
@@ -102,10 +102,10 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   halfSitting["LThumb1"] = {0.0};
   halfSitting["LThumb2"] = {0.0};
 
-  halfSitting["RShoulderPitch"] = {0.30 * 180/M_PI};
-  halfSitting["RShoulderRoll"] = {0.0};
+  halfSitting["RShoulderPitch"] = {1.49 * 180/M_PI};
+  halfSitting["RShoulderRoll"] = {-0.30 * 180/M_PI};
   halfSitting["RElbowYaw"] = {0.0};
-  halfSitting["RElbowRoll"] = {0.79};
+  halfSitting["RElbowRoll"] = {0.28* 180/M_PI};
   halfSitting["RWristYaw"] = {0.0};
   halfSitting["RHand"] = {0.0};
   halfSitting["RFinger13"] = {0.0};
