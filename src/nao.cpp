@@ -92,7 +92,7 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   halfSitting["LElbowYaw"] = {0.0};
   halfSitting["LElbowRoll"] = {-0.28 * 180/M_PI};
   halfSitting["LWristYaw"] = {0.0};
-  halfSitting["LHand"] = {0.0};
+  halfSitting["LHand"] = {0.50 * 180/M_PI};
   halfSitting["LFinger11"] = {0.0};
   halfSitting["LFinger12"] = {0.0};
   halfSitting["LFinger13"] = {0.0};
@@ -107,7 +107,7 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   halfSitting["RElbowYaw"] = {0.0};
   halfSitting["RElbowRoll"] = {0.28* 180/M_PI};
   halfSitting["RWristYaw"] = {0.0};
-  halfSitting["RHand"] = {0.0};
+  halfSitting["RHand"] = {0.50 * 180/M_PI};
   halfSitting["RFinger13"] = {0.0};
   halfSitting["RFinger12"] = {0.0};
   halfSitting["RFinger11"] = {0.0};
@@ -167,19 +167,10 @@ NAOCommonRobotModule::NAOCommonRobotModule()
       };
 
   _ref_joint_order = {
-      "HeadYaw", "HeadPitch", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch", "LAnklePitch", "LAnkleRoll", "RHipYawPitch", "RHipRoll", "RHipPitch", "RKneePitch", "RAnklePitch", "RAnkleRoll", "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand"};
-  // _ref_joint_order = {
-  //     "HeadYaw", "HeadPitch", "LHipYawPitch", "LHipRoll", "LHipPitch", "LKneePitch", "LAnklePitch", "LAnkleRoll", "RHipRoll", "RHipPitch", "RKneePitch", "RAnklePitch", "RAnkleRoll", "LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "LHand", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw", "RHand"};
+    "HeadPitch", "HeadYaw", "LAnklePitch", "LAnkleRoll", "LElbowRoll", "LElbowYaw", "LHand", "LHipPitch", "LHipRoll", "LHipYawPitch", "LKneePitch", "LShoulderPitch", "LShoulderRoll", "LWristYaw", "RAnklePitch", "RAnkleRoll", "RElbowRoll", "RElbowYaw", "RHand", "RHipPitch", "RHipRoll", "RKneePitch", "RShoulderPitch", "RShoulderRoll", "RWristYaw" };
 
   // Posture of base link in half-sitting for when no attitude is available.
   // (quaternion, translation)
-  // _default_attitude = {{1., 0., 0., 0.,  0., 0., 0.333}};
-
-  // Half sitting with rotated feet
-  // _default_attitude = {{1., 0., 0., 0.,  0., 0., 0.30}};
-  //_default_attitude = {{0.998113, -0.0239494, 0.0037978, 0.0564076, -0.00336301, 0.0127557, 0.275204}};
-
-
   _default_attitude = {{1., 0., 0., 0., -0.00336301, 0.0127557, 0.275204}};
   LOG_SUCCESS("NAOCommonRobotModule initialized");
 }
