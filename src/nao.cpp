@@ -42,10 +42,9 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   gripperLinks.push_back("RThumb1_link");
   gripperLinks.push_back("RThumb2_link");
 
-  _bodySensors = {
-    {"Accelerometer", "torso", sva::PTransformd(Eigen::Vector3d(-0.008, 0.00606, 0.027))},
-    {"Gyrometer", "torso", sva::PTransformd(Eigen::Vector3d(-0.008, 0.006, 0.029))}
-  };
+  _bodySensors.emplace_back("Accelerometer", "torso", sva::PTransformd(Eigen::Vector3d(-0.008, 0.00606, 0.027)));
+  _bodySensors.emplace_back("Gyrometer", "torso", sva::PTransformd(Eigen::Vector3d(-0.008, 0.006, 0.029)));
+
 
   halfSitting["HeadYaw"] = {0.0};
   halfSitting["HeadPitch"] = {0.0};
