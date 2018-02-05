@@ -17,11 +17,6 @@ endif()
 # Use jrl-cmakemoduels to get mc_rtc depency
 set(PKG_CONFIG_ADDITIONAL_VARIABLES "${PKG_CONFIG_ADDITIONAL_VARIABLES} libdir")
 add_required_dependency(mc_rtc)
-add_required_dependency(mc_rbdyn_urdf_cpp)
-
-# for Sophus
-add_definitions(-Wno-ignored-qualifiers)
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include/Sophus")
 
 # Find description package
 macro(find_description_package desc_pkg)
@@ -44,21 +39,12 @@ macro(find_description_package desc_pkg)
 endmacro()
 find_description_package(nao_description)
 
+set(MC_ROBOTS_INSTALL_PREFIX ${MC_RTC_PREFIX}/lib/mc_robots)
 
-configure_file(${PROJECT_SOURCE_DIR}/include/mc_nao/config.h.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/include/mc_nao/config.h)
-
-# XXX hardcoded
-set(MC_ROBOTS_INSTALL_PREFIX /usr/local/lib/mc_robots)
-
-set(robot_SRC src/nao.cpp)
-set(robot_HDR include/mc_nao/nao.h)
-set(robot_base nao)
-add_library(${robot_base} SHARED ${robot_SRC} ${robot_HDR})
-set_target_properties(${robot_base} PROPERTIES COMPILE_FLAGS "-DMC_ROBOTS_EXPORTS" PREFIX "")
-target_link_libraries(${robot_base} ${Boost_LIBRARIES})
-pkg_config_use_dependency(${robot_base} mc_rbdyn_urdf_cpp)
-pkg_config_use_dependency(${robot_base} mc_rtc)
-install(TARGETS ${robot_base} DESTINATION ${MC_ROBOTS_INSTALL_PREFIX})
+add_library(nao SHARED src/nao.cpp include/mc_nao/nao.h)
+set_target_properties(nao PROPERTIES COMPILE_FLAGS "-DMC_ROBOTS_EXPORTS -DNAO_DESCRIPTION_PATH_IN=\\\"${NAO_DESCRIPTION_PATH}\\\"" PREFIX "")
+pkg_config_use_dependency(nao mc_rtc)
+install(TARGETS nao DESTINATION ${MC_ROBOTS_INSTALL_PREFIX})
 
 
 setup_project_finalize()

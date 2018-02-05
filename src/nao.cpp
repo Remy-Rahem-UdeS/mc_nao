@@ -1,26 +1,20 @@
 #include "mc_nao/nao.h"
-#include <mc_nao/config.h>
 
-#include <mc_rtc/logging.h>
-#include <boost/algorithm/string.hpp>
+#include <mc_rtc/config.h>
 #include <fstream>
 
-namespace mc_nao
+namespace mc_rtc
 {
-const std::string nao_urdf = "nao";
-
+static std::string NAO_DESCRIPTION_PATH = NAO_DESCRIPTION_PATH_IN;
+}
+namespace mc_robots
+{
 NAOCommonRobotModule::NAOCommonRobotModule()
-    : RobotModule(mc_nao::NAO_DESCRIPTION_PATH, "nao")
+    : RobotModule(mc_rtc::NAO_DESCRIPTION_PATH, "nao")
 {
-  LOG_INFO("Loading NAO from: " << mc_nao::NAO_DESCRIPTION_PATH);
+  LOG_INFO("Loading NAO from: " << mc_rtc::NAO_DESCRIPTION_PATH);
   rsdf_dir = path + "/rsdf";
   calib_dir = path + "/calib";
-
-  // virtualLinks = {"base_link", "Neck", "Head", "gaze", "LPelvis", "LHip", "LThigh", "LTibia", "LAnklePitch", "l_ankle", "l_sole", "RPelvis", "RHip", "RThigh", "RTibia", "RAnklePitch", "r_ankle", "r_sole", "torso",
-  // "LShoulder", "LBicep", "LElbow", "LForeArm", "l_wrist", "l_gripper",
-  // "RShoulder", "RBicep", "RElbow", "RForeArm", "r_wrist", "r_gripper",
-  // "LFootBumperRight_frame", "RFsrRL_frame", "CameraBottom_optical_frame",
-  // "RFsrRR_frame", "LFsrFR_frame", "LHandTouchBack_frame", "LHandTouchLeft_frame"};
 
   gripperLinks.push_back("l_gripper");
   gripperLinks.push_back("r_gripper");
@@ -45,53 +39,29 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   _bodySensors.emplace_back("Accelerometer", "torso", sva::PTransformd(Eigen::Vector3d(-0.008, 0.00606, 0.027)));
   _bodySensors.emplace_back("Gyrometer", "torso", sva::PTransformd(Eigen::Vector3d(-0.008, 0.006, 0.029)));
 
-
   halfSitting["HeadYaw"] = {0.0};
   halfSitting["HeadPitch"] = {0.0};
 
-  // halfSitting["LHipYawPitch"] = {0.0};
-  // halfSitting["LHipRoll"] = {0.0};
-  // halfSitting["LHipPitch"] = {0.0};
-  // halfSitting["LKneePitch"] = {0.0};
-  // halfSitting["LAnklePitch"] = {0.0};
-  // halfSitting["LAnkleRoll"] = {0.0};
+  halfSitting["LHipYawPitch"] = {0.0};
+  halfSitting["LHipRoll"] = {0.0};
+  halfSitting["LHipPitch"] = {0.0};
+  halfSitting["LKneePitch"] = {0.0};
+  halfSitting["LAnklePitch"] = {0.0};
+  halfSitting["LAnkleRoll"] = {0.0};
 
-  // halfSitting["RHipYawPitch"] = {0.0};
-  // halfSitting["RHipRoll"] = {0.0};
-  // halfSitting["RHipPitch"] = {0.0};
-  // halfSitting["RKneePitch"] = {0.0};
-  // halfSitting["RAnklePitch"] = {0.0};
-  // halfSitting["RAnkleRoll"] = {0.0};
+  halfSitting["RHipYawPitch"] = {0.0};
+  halfSitting["RHipRoll"] = {0.0};
+  halfSitting["RHipPitch"] = {0.0};
+  halfSitting["RKneePitch"] = {0.0};
+  halfSitting["RAnklePitch"] = {0.0};
+  halfSitting["RAnkleRoll"] = {0.0};
 
-//rotation error q[0]: 0.00918355 -0.0241499 0.0312002
-
-  halfSitting["LHipYawPitch"] = {0.1396 * 180/3.14159};
-  halfSitting["LHipRoll"] = {0.1396 * 180/3.14159};
-  halfSitting["LHipPitch"] = {-0.88967 * 180/3.14159};
-  halfSitting["LKneePitch"] = {1.5247 * 180/3.14159};
-  halfSitting["LAnklePitch"] = {(-0.7394 + 0.005) * 180/3.14159};
-  halfSitting["LAnkleRoll"] = {(-0.0858 - 0.048) * 180/3.14159};
-  //0.13963603973388672, 0.13963603973388672, -0.8896780014038086, 1.5247540473937988, -0.7394299507141113, -0.0858621597290039
-
-  halfSitting["RHipYawPitch"] = {0.1396 * 180/3.14159};
-  halfSitting["RHipRoll"] = {-0.1396 * 180/3.14159};
-  halfSitting["RHipPitch"] = {-0.88967 * 180/3.14159};
-  halfSitting["RKneePitch"] = {1.5247 * 180/3.14159};
-  halfSitting["RAnklePitch"] = {(-0.7394 + 0.005) * 180/3.14159};
-  halfSitting["RAnkleRoll"] = {(0.0858 + 0.048)  * 180/3.14159};
-  // halfSitting["RHipYawPitch"] = {0.1004318904876709 * 180/3.14159};
-  // halfSitting["RHipRoll"] = {-0.14730596542358398 * 180/3.14159};
-  // halfSitting["RHipPitch"] = {-0.556800127029419 * 180/3.14159};
-  // halfSitting["RKneePitch"] = {1.0002098083496 * 180/3.14159};
-  // halfSitting["RAnklePitch"] = {-0.5256240844726562 * 180/3.14159};
-  // halfSitting["RAnkleRoll"] = {0.15029001235961914 * 180/3.14159};
-
-  halfSitting["LShoulderPitch"] = {1.49 * 180/M_PI};
-  halfSitting["LShoulderRoll"] = {0.30 * 180/M_PI};
+  halfSitting["LShoulderPitch"] = {1.49 * 180 / M_PI};
+  halfSitting["LShoulderRoll"] = {0.30 * 180 / M_PI};
   halfSitting["LElbowYaw"] = {0.0};
-  halfSitting["LElbowRoll"] = {-0.28 * 180/M_PI};
+  halfSitting["LElbowRoll"] = {-0.28 * 180 / M_PI};
   halfSitting["LWristYaw"] = {0.0};
-  halfSitting["LHand"] = {0.50 * 180/M_PI};
+  halfSitting["LHand"] = {0.50 * 180 / M_PI};
   halfSitting["LFinger11"] = {0.0};
   halfSitting["LFinger12"] = {0.0};
   halfSitting["LFinger13"] = {0.0};
@@ -101,12 +71,12 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   halfSitting["LThumb1"] = {0.0};
   halfSitting["LThumb2"] = {0.0};
 
-  halfSitting["RShoulderPitch"] = {1.49 * 180/M_PI};
-  halfSitting["RShoulderRoll"] = {-0.30 * 180/M_PI};
+  halfSitting["RShoulderPitch"] = {1.49 * 180 / M_PI};
+  halfSitting["RShoulderRoll"] = {-0.30 * 180 / M_PI};
   halfSitting["RElbowYaw"] = {0.0};
-  halfSitting["RElbowRoll"] = {0.28* 180/M_PI};
+  halfSitting["RElbowRoll"] = {0.28 * 180 / M_PI};
   halfSitting["RWristYaw"] = {0.0};
-  halfSitting["RHand"] = {0.50 * 180/M_PI};
+  halfSitting["RHand"] = {0.50 * 180 / M_PI};
   halfSitting["RFinger13"] = {0.0};
   halfSitting["RFinger12"] = {0.0};
   halfSitting["RFinger11"] = {0.0};
@@ -115,7 +85,6 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   halfSitting["RFinger23"] = {0.0};
   halfSitting["RThumb1"] = {0.0};
   halfSitting["RThumb2"] = {0.0};
-
 
   // Foot force sensors.
   // XXX parse position from URDF
@@ -165,8 +134,11 @@ NAOCommonRobotModule::NAOCommonRobotModule()
           {"r_gripper", {"RHand"}, false},
       };
 
+  // _springs.springsBodies = {"l_ankle", "r_ankle"};  //TODO: check these are the correct bodies
+  _springs.springsBodies = {};  //TODO: check these are the correct bodies
+
   _ref_joint_order = {
-    "HeadPitch", "HeadYaw", "LAnklePitch", "LAnkleRoll", "LElbowRoll", "LElbowYaw", "LHand", "LHipPitch", "LHipRoll", "LHipYawPitch", "LKneePitch", "LShoulderPitch", "LShoulderRoll", "LWristYaw", "RAnklePitch", "RAnkleRoll", "RElbowRoll", "RElbowYaw", "RHand", "RHipPitch", "RHipRoll", "RKneePitch", "RShoulderPitch", "RShoulderRoll", "RWristYaw" };
+      "HeadPitch", "HeadYaw", "LAnklePitch", "LAnkleRoll", "LElbowRoll", "LElbowYaw", "LHand", "LHipPitch", "LHipRoll", "LHipYawPitch", "LKneePitch", "LShoulderPitch", "LShoulderRoll", "LWristYaw", "RAnklePitch", "RAnkleRoll", "RElbowRoll", "RElbowYaw", "RHand", "RHipPitch", "RHipRoll", "RKneePitch", "RShoulderPitch", "RShoulderRoll", "RWristYaw"};
 
   // Posture of base link in half-sitting for when no attitude is available.
   // (quaternion, translation)
@@ -212,7 +184,8 @@ void NAOCommonRobotModule::readUrdf(const std::string& robotName, const std::vec
 std::map<std::string, std::vector<double>> NAOCommonRobotModule::halfSittingPose(const rbd::MultiBody& mb) const
 {
   std::map<std::string, std::vector<double>> res;
-  for (const auto& j : mb.joints()) {
+  for (const auto& j : mb.joints())
+  {
     if (halfSitting.count(j.name()))
     {
       res[j.name()] = halfSitting.at(j.name());
@@ -264,14 +237,6 @@ std::vector<std::map<std::string, std::vector<double>>> NAOCommonRobotModule::no
 std::map<std::string, std::pair<std::string, std::string>> NAOCommonRobotModule::stdCollisionsFiles(const rbd::MultiBody& /*mb*/) const
 {
   std::map<std::string, std::pair<std::string, std::string>> res;
-  // for (const auto& b : mb.bodies())
-  // {
-  //   // Filter out virtual links without convex files
-  //   if (std::find(std::begin(virtualLinks), std::end(virtualLinks), b.name()) == std::end(virtualLinks))
-  //   {
-  //     res[b.name()] = {b.name(), boost::algorithm::replace_first_copy(b.name(), "_LINK", "")};
-  //   }
-  // }
 
   // Manually add all convex for bodies
   auto addBody = [&res](const std::string& body, const std::string& file) {
@@ -295,115 +260,45 @@ std::map<std::string, std::pair<std::string, std::string>> NAOCommonRobotModule:
   addBody("RThigh", "RHipPitch");
   addBody("RTibia", "RKneePitch");
   addBody("r_ankle", "RAnkleRoll");
-
-  // addBody("body", "WAIST_LINK");
-  // addBody("torso", "CHEST_Y");
-
-  // addBody("R_HIP_Y_LINK", "HIP_Y");
-  // addBody("R_HIP_R_LINK", "CHEST_P");
-  // addBody("R_ANKLE_P_LINK", "L_ANKLE_P");
-  // addBody("r_ankle", "R_FOOT");
-
-  // addBody("L_HIP_Y_LINK", "HIP_Y");
-  // addBody("L_HIP_R_LINK", "CHEST_P");
-  // addBody("l_ankle", "L_FOOT");
-
-  // addBody("CHEST_P_LINK", "CHEST");
-
-  // addBody("R_SHOULDER_Y_LINK", "SHOULDER_Y");
-  // addBody("R_ELBOW_P_LINK", "ELBOW_P");
-  // addBody("R_WRIST_P_LINK", "WRIST_P");
-  // addBody("r_wrist", "R_WRIST_R");
-
-  // auto finger = [&addBody](const std::string& prefix) {
-  //   addBody(prefix + "_HAND_J0_LINK", prefix + "_THUMB");
-  //   addBody(prefix + "_HAND_J1_LINK", prefix + "_F1");
-  //   for (unsigned int i = 2; i < 6; ++i)
-  //   {
-  //     std::stringstream key1;
-  //     key1 << prefix << "_F" << i << "2_LINK";
-  //     std::stringstream key2;
-  //     key2 << prefix << "_F" << i << "3_LINK";
-  //     addBody(key1.str(), "F2");
-  //     addBody(key2.str(), "F3");
-  //   }
-  // };
-  // finger("R");
-  // finger("L");
-
-  // addBody("L_SHOULDER_Y_LINK", "SHOULDER_Y");
-  // addBody("L_ELBOW_P_LINK", "ELBOW_P");
-  // addBody("L_WRIST_P_LINK", "WRIST_P");
-  // addBody("l_wrist", "L_WRIST_R");
-
-  // auto addWristSubConvex = [&res](const std::string& prefix) {
-  //   std::string wristY = prefix + "_WRIST_Y_LINK";
-  //   std::string wristR = boost::algorithm::to_lower_copy(prefix) + "_wrist";
-  //   res[wristY + "_sub0"] = {wristY, prefix + "_WRIST_Y_sub0"};
-  //   res[wristR + "_sub0"] = {wristR, prefix + "_WRIST_R_sub0"};
-  //   res[wristR + "_sub1"] = {wristR, prefix + "_WRIST_R_sub1"};
-  // };
-  // addWristSubConvex("L");
-  // addWristSubConvex("R");
-
   return res;
 }
 
-NAONoHandRobotModule::NAONoHandRobotModule()
+const std::map<std::string, std::pair<std::string, std::string>>& NAOCommonRobotModule::convexHull() const
+{
+  return _convexHull;
+}
+
+const std::vector<std::map<std::string, std::vector<double>>>& NAOCommonRobotModule::bounds() const
+{
+  return _bounds;
+}
+
+const std::map<std::string, std::vector<double>>& NAOCommonRobotModule::stance() const
+{
+  return _stance;
+}
+
+NAONoHandRobotModule::NAONoHandRobotModule() : NAOCommonRobotModule()
 {
   for (const auto& gl : gripperLinks)
   {
     filteredLinks.push_back(gl);
   }
-  readUrdf(nao_urdf, filteredLinks);
-
-  // _springs.springsBodies = {"l_ankle", "r_ankle"};  //TODO: check these are the correct bodies
-  _springs.springsBodies = {};
-}
-
-const std::map<std::string, std::pair<std::string, std::string>>& NAONoHandRobotModule::convexHull() const
-{
+  readUrdf("nao", filteredLinks);
   auto fileByBodyName = stdCollisionsFiles(mb);
-  const_cast<NAONoHandRobotModule*>(this)->_convexHull = getConvexHull(fileByBodyName);
-  return _convexHull;
+  _bounds = nominalBounds(limits);
+  _stance = halfSittingPose(mb);
+  _convexHull = getConvexHull(fileByBodyName);
+  LOG_SUCCESS("NOANoHandRobotModule intialized");
 }
 
-const std::vector<std::map<std::string, std::vector<double>>>& NAONoHandRobotModule::bounds() const
+NAOWithHandRobotModule::NAOWithHandRobotModule() : NAOCommonRobotModule()
 {
-  const_cast<NAONoHandRobotModule*>(this)->_bounds = nominalBounds(limits);
-  return _bounds;
-}
-
-const std::map<std::string, std::vector<double>>& NAONoHandRobotModule::stance() const
-{
-  const_cast<NAONoHandRobotModule*>(this)->_stance = halfSittingPose(mb);
-  return _stance;
-}
-
-NAOWithHandRobotModule::NAOWithHandRobotModule()
-{
-  readUrdf(nao_urdf, filteredLinks);
-
-  // _springs.springsBodies = {"l_ankle", "r_ankle"};  //TODO: check these are the correct bodies
-  _springs.springsBodies = {};  //TODO: check these are the correct bodies
-}
-
-const std::map<std::string, std::pair<std::string, std::string>>& NAOWithHandRobotModule::convexHull() const
-{
+  readUrdf("nao", filteredLinks);
   auto fileByBodyName = stdCollisionsFiles(mb);
-  const_cast<NAOWithHandRobotModule*>(this)->_convexHull = getConvexHull(fileByBodyName);
-  return _convexHull;
-}
-
-const std::vector<std::map<std::string, std::vector<double>>>& NAOWithHandRobotModule::bounds() const
-{
-  const_cast<NAOWithHandRobotModule*>(this)->_bounds = nominalBounds(limits);
-  return _bounds;
-}
-
-const std::map<std::string, std::vector<double>>& NAOWithHandRobotModule::stance() const
-{
-  const_cast<NAOWithHandRobotModule*>(this)->_stance = halfSittingPose(mb);
-  return _stance;
+  _bounds = nominalBounds(limits);
+  _stance = halfSittingPose(mb);
+  _convexHull = getConvexHull(fileByBodyName);
+  LOG_SUCCESS("NAOWithHandRobotModule initialized");
 }
 }

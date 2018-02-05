@@ -6,7 +6,7 @@ ${DEFINE_CHOOSE_HRP4}
 
 #include <string>
 
-namespace mc_nao
+namespace mc_robots
 {
 constexpr auto NAO_DESCRIPTION_PATH = "${NAO_DESCRIPTION_PATH}";
 }
