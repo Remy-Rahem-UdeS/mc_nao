@@ -1,50 +1,29 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1)
 
-include(cmake/base.cmake)
-include(cmake/boost.cmake)
+project(mc_nao)
+set(CMAKE_CXX_STANDARD 11)
 
-set(PROJECT_NAME mc_nao)
-set(PROJECT_DESCRIPTION "Controller for vision integration (SLAM) for mc_rtc")
-set(PROJECT_URL https://gite.lirmm.fr/atanguy/mc_vision_controllers)
+find_package(nao_description REQUIRED)
+find_package(mc_rtc REQUIRED)
 
-setup_project()
-
-# Enable C++11
-if(NOT WIN32)
-  add_definitions(-std=c++0x)
+if("${nao_description_INSTALL_PREFIX}" STREQUAL "")
+  if("${nao_description_SOURCE_PREFIX}" STREQUAL "")
+    message(FATAL_ERROR "Your nao_description package does not define where to find the data")
+  endif()
+  set(NAO_DESCRIPTION_PATH "${nao_description_SOURCE_PREFIX}")
+else()
+  set(NAO_DESCRIPTION_PATH "${nao_description_INSTALL_PREFIX}")
 endif()
 
-# Use jrl-cmakemoduels to get mc_rtc depency
-set(PKG_CONFIG_ADDITIONAL_VARIABLES "${PKG_CONFIG_ADDITIONAL_VARIABLES} libdir")
-add_required_dependency(mc_rtc)
+message("NAO_DESCRIPTION_PATH: ${NAO_DESCRIPTION_PATH}")
+configure_file(include/mc_nao/config.h.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/include/mc_nao/config.h")
 
-# Find description package
-macro(find_description_package desc_pkg)
-  string(TOUPPER "${desc_pkg}" "DESC_PKG")
-  if(NOT DEFINED ${DESC_PKG}_PATH)
-    add_optional_dependency("${desc_pkg}")
-    if(${${DESC_PKG}_FOUND})
-      execute_process(
-        COMMAND "${PKG_CONFIG_EXECUTABLE}"
-        "--variable=datadir" "${desc_pkg}"
-        OUTPUT_VARIABLE "${DESC_PKG}_PATH"
-        ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
-    else()
-      MESSAGE(WARNING "${DESC_PKG}_PATH is not defined and pkg-config failed to find ${desc_pkg}, the related robots' modules will not work properly. Check your system configuration or define ${DESC_PKG} to fix this issue.")
-    endif()
-  endif()
-  if(DEFINED ${DESC_PKG}_PATH)
-    MESSAGE(STATUS "Found ${desc_pkg}: ${${DESC_PKG}_PATH}")
-  endif()
-endmacro()
-find_description_package(nao_description)
+add_robot(nao src/nao.cpp include/mc_nao/nao.h)
+target_include_directories(nao PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/include")
+target_include_directories(nao PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-set(MC_ROBOTS_INSTALL_PREFIX ${MC_RTC_PREFIX}/lib/mc_robots)
-
-add_library(nao SHARED src/nao.cpp include/mc_nao/nao.h)
-set_target_properties(nao PROPERTIES COMPILE_FLAGS "-DMC_ROBOTS_EXPORTS -DNAO_DESCRIPTION_PATH_IN=\\\"${NAO_DESCRIPTION_PATH}\\\"" PREFIX "")
-pkg_config_use_dependency(nao mc_rtc)
-install(TARGETS nao DESTINATION ${MC_ROBOTS_INSTALL_PREFIX})
-
-
-setup_project_finalize()
+option(DISABLE_TESTS "Disable unit tests" OFF)
+if(NOT ${DISABLE_TESTS})
+  enable_testing()
+  add_subdirectory(tests)
+endif()

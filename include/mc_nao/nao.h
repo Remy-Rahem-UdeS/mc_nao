@@ -19,9 +19,9 @@ struct MC_ROBOTS_DLLAPI NAOCommonRobotModule : public mc_rbdyn::RobotModule
   std::vector<std::map<std::string, std::vector<double>>> nominalBounds(const mc_rbdyn_urdf::Limits& limits) const;
   std::map<std::string, std::pair<std::string, std::string>> getConvexHull(const std::map<std::string, std::pair<std::string, std::string>>& files) const;
   std::map<std::string, std::pair<std::string, std::string>> stdCollisionsFiles(const rbd::MultiBody& mb) const;
-  virtual const std::map<std::string, std::pair<std::string, std::string>>& convexHull() const;
-  virtual const std::vector<std::map<std::string, std::vector<double>>>& bounds() const;
-  virtual const std::map<std::string, std::vector<double>>& stance() const;
+  const std::map<std::string, std::pair<std::string, std::string>>& convexHull() const;
+  const std::vector<std::map<std::string, std::vector<double>>>& bounds() const;
+  const std::map<std::string, std::vector<double>>& stance() const;
 
  public:
   std::vector<std::string> virtualLinks;

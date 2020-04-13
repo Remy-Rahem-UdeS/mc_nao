@@ -1,12 +1,7 @@
-#include "mc_nao/nao.h"
-
-#include <mc_rtc/config.h>
+#include <mc_nao/nao.h>
+#include <mc_nao/config.h>
 #include <fstream>
 
-namespace mc_rtc
-{
-static std::string NAO_DESCRIPTION_PATH = NAO_DESCRIPTION_PATH_IN;
-}
 namespace mc_robots
 {
 NAOCommonRobotModule::NAOCommonRobotModule()
