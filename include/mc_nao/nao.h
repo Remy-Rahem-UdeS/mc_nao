@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mc_rbdyn/RobotModule.h>
+#include <mc_rbdyn/RobotModuleMacros.h>
 #include <mc_rbdyn_urdf/urdf.h>
 #include <mc_robots/api.h>
 
@@ -46,13 +47,14 @@ struct MC_ROBOTS_DLLAPI NAOWithHandRobotModule : public NAOCommonRobotModule
 
 /*TODO Provide a different constructor to allow WithHand/NoHand instantation */
 extern "C" {
-ROBOT_MODULE_API std::vector<std::string> MC_RTC_ROBOT_MODULE()
+ROBOT_MODULE_API void MC_RTC_ROBOT_MODULE(std::vector<std::string> & names)
 {
-  return {"NAO", "NAONoHand"};
+  names = {"NAO", "NAONoHand"};
 }
 ROBOT_MODULE_API void destroy(mc_rbdyn::RobotModule* ptr) { delete ptr; }
 ROBOT_MODULE_API mc_rbdyn::RobotModule* create(const std::string& n)
 {
+  ROBOT_MODULE_CHECK_VERSION("NAO")
   if (n == "NAO")
   {
     return new mc_robots::NAOWithHandRobotModule();
