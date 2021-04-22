@@ -95,6 +95,14 @@ NAOCommonRobotModule::NAOCommonRobotModule()
   _forceSensors.push_back(mc_rbdyn::ForceSensor("LF_TOTAL_WEIGHT", "l_ankle", sva::PTransformd(Eigen::Vector3d(0.07025, -0.0299, -0.04511))));
   _forceSensors.push_back(mc_rbdyn::ForceSensor("RF_TOTAL_WEIGHT", "r_ankle", sva::PTransformd(Eigen::Vector3d(0.07025, -0.0299, -0.04511))));
 
+  Eigen::Matrix3d rotation_wrist_sensor;
+  rotation_wrist_sensor << 0.0, 0.0, 1.0,
+                           0.0, -1.0, 0.0,
+                           1.0, 0.0, 0.0;
+
+  _forceSensors.push_back(mc_rbdyn::ForceSensor("LH_FORCE", "l_wrist", sva::PTransformd(rotation_wrist_sensor)));
+  _forceSensors.push_back(mc_rbdyn::ForceSensor("RH_FORCE", "r_wrist", sva::PTransformd(rotation_wrist_sensor)));
+
   _minimalSelfCollisions = {
       mc_rbdyn::Collision("Head", "l_wrist", 0.02, 0.01, 0.),
       mc_rbdyn::Collision("Head", "r_wrist", 0.02, 0.01, 0.),
