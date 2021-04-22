@@ -137,7 +137,7 @@ NAOCommonRobotModule::NAOCommonRobotModule()
 
   // Posture of base link in half-sitting for when no attitude is available.
   // (quaternion, translation)
-  _default_attitude = {{1., 0., 0., 0., -0.00336301, 0.0127557, 0.332674}};
+  _default_attitude = {{1., 0., 0., 0., 0., 0., 0.332674}};
   LOG_SUCCESS("NAOCommonRobotModule initialized");
 }
 
